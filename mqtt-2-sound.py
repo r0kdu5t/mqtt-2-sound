@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 import yaml
 import pygame
 import os
+import sys
 
 config_f = open('config.yaml')
 config = yaml.safe_load(config_f)
@@ -25,7 +26,7 @@ def on_connect(client, userdata, rc):
     mqttc.subscribe("door/inner/doorbell")
     # mqttc.subscribe("door/inner/opened/username")
 
-def on_message(obj, msg):
+def on_message(client, obj, msg):
     print "Received %s on topic %s" % (msg.payload, msg.topic)
     if msg.topic == 'door/inner/opened/username':
         # Set volume to 50% for this clip
@@ -60,7 +61,7 @@ mqttc.on_message = on_message
 
 while True:
     try:
-        client.loop_forever()
+        mqttc.loop_forever()
 #   except socket.error:
 #       time.sleep(5)
     except KeyboardInterrupt:
