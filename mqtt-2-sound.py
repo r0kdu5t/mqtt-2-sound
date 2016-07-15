@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import mosquitto
+import paho.mqtt.client as mqtt
 import yaml
 import pygame
 import os
@@ -13,6 +13,17 @@ pygame.mixer.init(44100, -16, 1, 2048)
 
 currently_playing_file = ""
 
+# The callback for when the client receives a CONNACK response from the server.
+def on_connect(client, userdata, rc):
+    print("Connected with result code "+str(rc))
+    # Subscribing in on_connect() means that if we lose the connection and 
+    # reconnect then subscriptions will be renewed.
+    #client.subscribe("hello/world")
+    mqttc.subscribe("door/outer/buzzer")
+    # mqttc.subscribe("door/outer/opened/username")
+
+    mqttc.subscribe("door/inner/doorbell")
+    # mqttc.subscribe("door/inner/opened/username")
 
 def on_message(obj, msg):
     print "Received %s on topic %s" % (msg.payload, msg.topic)
@@ -38,14 +49,13 @@ def play(filename,level = 1.0):
             pygame.mixer.music.play()
 
 
-mqttc = mosquitto.Mosquitto(config['mqtt']['name'])
-mqttc.connect(config['mqtt']['server'], 1883, 60, True)
+#mqttc = mosquitto.Mosquitto(config['mqtt']['name'])
+mqttc = mqtt.Client(config['mqtt']['name'])
+#mqttc.connect(config['mqtt']['server'], 1883, 60, True)
+mqttc.connect(config['mqtt']['server'], 1883, 60)
 
-mqttc.subscribe("door/outer/buzzer")
-mqttc.subscribe("door/outer/opened/username")
 
-mqttc.subscribe("door/inner/doorbell")
-mqttc.subscribe("door/inner/opened/username")
+mqttc.on_connect = on_connect
 mqttc.on_message = on_message
 
 while mqttc.loop(timeout=100) == 0:
