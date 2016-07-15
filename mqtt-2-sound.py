@@ -58,6 +58,13 @@ mqttc.connect(config['mqtt']['server'], 1883, 60)
 mqttc.on_connect = on_connect
 mqttc.on_message = on_message
 
-while mqttc.loop(timeout=100) == 0:
-    pass
+while True:
+    try:
+        client.loop_forever()
+#   except socket.error:
+#       time.sleep(5)
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+## EOF
 

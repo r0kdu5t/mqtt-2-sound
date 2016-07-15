@@ -9,3 +9,14 @@ To change the sounds for other things, switch out the audio to your own ogg file
 * door_outer_opened.ogg = outer door has been opened
 * buzzer.ogg = intercom buzzer has been pressed
 * doorbell.ogg = inner doorbell has been pressed
+
+Installation
+------------
+
+Ensure that all dependancies are met before running.
+
+Require:
+* paho_client (Check ??)
+* yaml
+* pygame
+
