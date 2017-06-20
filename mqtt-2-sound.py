@@ -21,10 +21,10 @@ def on_connect(client, userdata, rc):
     # reconnect then subscriptions will be renewed.
     #client.subscribe("hello/world")
     mqttc.subscribe("door/outer/buzzer")
-    # mqttc.subscribe("door/outer/opened/username")
+    mqttc.subscribe("door/outer/opened/username")
 
     mqttc.subscribe("door/inner/doorbell")
-    # mqttc.subscribe("door/inner/opened/username")
+    mqttc.subscribe("door/inner/opened/username")
 
 def on_message(client, obj, msg):
     print "Received %s on topic %s" % (msg.payload, msg.topic)
