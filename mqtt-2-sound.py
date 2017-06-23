@@ -36,10 +36,10 @@ def on_connect(client, userdata, rc):
 def on_message(client, obj, msg):
     print "Received %s on topic %s" % (msg.payload, msg.topic)
     if msg.topic == 'door/inner/doorbell':
-        GPIO.output(3, GPIO.HIGH)
+        #GPIO.output(3, GPIO.HIGH)
         os.system("ogg123 audio/doorbell.ogg")
         time.sleep(5)
-        GPIO.output(3, GPIO.LOW)
+        #GPIO.output(3, GPIO.LOW)
     elif msg.topic == 'door/inner/opened/username':
         os.system("ogg123 audio/outer_door_opened.ogg")
         time.sleep(1)
