@@ -18,7 +18,7 @@ config = yaml.safe_load(config_f)
 config_f.close()
 
 # set up the mixer at 44100 frequency, with 16 signed bits per sample, 1 channel, with a 2048 sample buffer
-#pygame.mixer.init(44100, -16, 1, 2048)
+pygame.mixer.init(44100, -16, 1, 2048)
 
 currently_playing_file = ""
 
