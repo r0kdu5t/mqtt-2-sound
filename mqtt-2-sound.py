@@ -5,6 +5,7 @@ import pygame
 import time
 import os
 import sys
+import random
 
 #import RPi.GPIO as GPIO
 
@@ -20,6 +21,25 @@ config_f.close()
 #pygame.mixer.init(44100, -16, 1, 2048)
 
 currently_playing_file = ""
+
+def getAnnounceFile(username):
+	config_FileName = "audio/" + username + "_announce.cfg"
+	if(os.path.exists(config_FileName)):
+		print("Config file found.")
+		config_File = open(config_FileName)
+		line = config_File.readline()
+		selectedFile = "audio/buzzer.ogg"
+		skipCount = random.randint(0, int(line) -1)
+		while(skipCount):
+			line = config_File.readline()
+			if(len(line) > 0):
+				selectedFile = line
+			skipCount = skipCount - 1
+		config_File.close()
+		print("Playing " + selectedFile)
+		return "audio/" + selectedFile
+	else :
+		return "audio/%s_announce.ogg"
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, rc):
@@ -45,8 +65,11 @@ def on_message(client, obj, msg):
         time.sleep(1)
         print "Person: %s has arrived." % (msg.payload)
         os.system("pico2wave -w /tmp/test.wav \"Attention, " + msg.payload + " has arrived.\"; aplay /tmp/test.wav; rm /tmp/test.wav");
+    elif msg.topic == 'door/outer/opened/username':
+    	# Set volume to 50% for this clip
+    	play(getAnnounceFile(msg.payload), 0.5)
 
-def play(filename,level = 1.0):
+def play(filename, level = 1.0):
     global currently_playing_file
     if os.path.isfile(filename):
         if (not pygame.mixer.music.get_busy()) or (currently_playing_file is not filename):
@@ -76,3 +99,4 @@ while True:
         sys.exit(0)
 
 ## EOF
+# https://github.com/zanejg/pi_doorbell/blob/master/doorbell/doorbell2.py
