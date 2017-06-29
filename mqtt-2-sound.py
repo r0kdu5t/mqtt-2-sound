@@ -33,11 +33,12 @@ def getAnnounceFile(username):
 		while(skipCount):
 			line = config_File.readline()
 			if(len(line) > 0):
-				selectedFile = line
+				selectedFile = line.rstrip()
 			skipCount = skipCount - 1
 		config_File.close()
-		print("Playing " + selectedFile)
-		return "audio/" + selectedFile
+		print("Playing " + selectedFile + "###")
+		#return "audio/" + selectedFile
+		return os.path.join("audio", selectedFile)
 	else :
 		return "audio/%s_announce.ogg" % username
 
@@ -76,6 +77,7 @@ def on_message(client, obj, msg):
 def play(filename, level = 1.0):
     global currently_playing_file
     print(filename)
+    print(os.path.isfile(filename))
     if os.path.isfile(filename):
         if (not pygame.mixer.music.get_busy()) or (currently_playing_file is not filename):
             print "Playing %s" % filename
