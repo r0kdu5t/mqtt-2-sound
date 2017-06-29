@@ -60,6 +60,9 @@ def on_message(client, obj, msg):
         os.system("ogg123 audio/doorbell.ogg")
         time.sleep(5)
         #GPIO.output(3, GPIO.LOW)
+    elif msg.topic == 'door/outer/buzzer':
+        os.system("ogg123 audio/buzzer.ogg")
+        time.sleep(5)
     elif msg.topic == 'door/inner/opened/username':
         os.system("ogg123 audio/outer_door_opened.ogg")
         time.sleep(1)
