@@ -39,7 +39,7 @@ def getAnnounceFile(username):
 		print("Playing " + selectedFile)
 		return "audio/" + selectedFile
 	else :
-		return "audio/%s_announce.ogg"
+		return "audio/%s_announce.ogg" % username
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, rc):
@@ -57,12 +57,13 @@ def on_message(client, obj, msg):
     print "Received %s on topic %s" % (msg.payload, msg.topic)
     if msg.topic == 'door/inner/doorbell':
         #GPIO.output(3, GPIO.HIGH)
-        os.system("ogg123 audio/doorbell.ogg")
-        time.sleep(5)
+        os.system("ogg123 -q audio/doorbell.ogg")
+        time.sleep(1)
         #GPIO.output(3, GPIO.LOW)
     elif msg.topic == 'door/outer/buzzer':
-        os.system("ogg123 audio/buzzer.ogg")
-        time.sleep(5)
+        #play("audio/buzzer.ogg")
+        play("audio/UnFoundBug/JumpVanHalen.ogg")
+        time.sleep(1)
     elif msg.topic == 'door/inner/opened/username':
         os.system("ogg123 audio/outer_door_opened.ogg")
         time.sleep(1)
@@ -74,6 +75,7 @@ def on_message(client, obj, msg):
 
 def play(filename, level = 1.0):
     global currently_playing_file
+    print(filename)
     if os.path.isfile(filename):
         if (not pygame.mixer.music.get_busy()) or (currently_playing_file is not filename):
             print "Playing %s" % filename
