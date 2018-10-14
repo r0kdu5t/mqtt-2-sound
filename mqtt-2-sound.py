@@ -43,7 +43,7 @@ def getAnnounceFile(username):
 		return "audio/%s_announce.ogg" % username
 
 # The callback for when the client receives a CONNACK response from the server.
-def on_connect(client, userdata, rc):
+def on_connect(self, client, userdata, rc):
     print("Connected with result code "+str(rc))
     # Subscribing in on_connect() means that if we lose the connection and 
     # reconnect then subscriptions will be renewed.
@@ -53,6 +53,8 @@ def on_connect(client, userdata, rc):
 
     mqttc.subscribe("door/inner/doorbell")
     mqttc.subscribe("door/inner/opened/username")
+
+    mqttc.subscribe("Garage/#")    
 
 def on_message(client, obj, msg):
     print "Received %s on topic %s" % (msg.payload, msg.topic)
@@ -66,6 +68,11 @@ def on_message(client, obj, msg):
         #play("audio/buzzer.ogg")
         #play("audio/UnFoundBug/JumpVanHalen.ogg")
         time.sleep(1)
+    elif msg.topic == 'Garage/Internal' and msg.payload == 'STATE_ALARM':
+        os.system("ogg123 -q audio/buzzer.ogg")
+        #play("audio/buzzer.ogg")
+        #play("audio/UnFoundBug/JumpVanHalen.ogg")
+        time.sleep(1)        
     elif msg.topic == 'door/inner/opened/username':
         os.system("ogg123 audio/outer_door_opened.ogg")
         time.sleep(1)
