@@ -77,7 +77,13 @@ def on_message(client, obj, msg):
         os.system("ogg123 -q audio/buzzer.ogg")
         #play("audio/buzzer.ogg")
         #play("audio/UnFoundBug/JumpVanHalen.ogg")
-        time.sleep(1)        
+        time.sleep(1)
+    elif msg.topic == 'Garage/Door' and msg.payload == 'STATE_ALARM':
+        #os.system("ogg123 audio/outer_door_opened.ogg")
+        #time.sleep(1)
+        #print "Person: %s has arrived." % (msg.payload)
+        os.system("pico2wave -w /tmp/test.wav \"Attention, Please close the door.\"; aplay /tmp/test.wav; rm /tmp/test.wav");
+        time.sleep(1)                
     elif msg.topic == 'door/inner/opened/username':
         os.system("ogg123 audio/outer_door_opened.ogg")
         time.sleep(1)
