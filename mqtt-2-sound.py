@@ -62,13 +62,18 @@ def on_message(client, obj, msg):
         #GPIO.output(3, GPIO.HIGH)
         os.system("ogg123 -q audio/doorbell.ogg")
         time.sleep(1)
+    elif msg.topic == 'Garage/Gate' and msg.payload == 'STATE_ALARM':
+        os.system("ogg123 -q audio/klaxon.ogg")
+        #play("audio/buzzer.ogg")
+        #play("audio/UnFoundBug/JumpVanHalen.ogg")
+        time.sleep(1)        
         #GPIO.output(3, GPIO.LOW)
     elif msg.topic == 'door/outer/buzzer':
     	os.system("mpg123 -q audio/ED209_Comply.mp3")
         #play("audio/buzzer.ogg")
         #play("audio/UnFoundBug/JumpVanHalen.ogg")
         time.sleep(1)
-    elif msg.topic == 'Garage/Internal' and msg.payload == 'STATE_ALARM':
+    elif msg.topic == 'Garage/Courtyard' and msg.payload == 'STATE_ALARM':
         os.system("ogg123 -q audio/buzzer.ogg")
         #play("audio/buzzer.ogg")
         #play("audio/UnFoundBug/JumpVanHalen.ogg")
