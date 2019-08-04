@@ -54,7 +54,7 @@ def on_connect(self, client, userdata, rc):
     mqttc.subscribe("door/inner/doorbell")
     mqttc.subscribe("door/inner/opened/username")
 
-    mqttc.subscribe("Garage/#")    
+    mqttc.subscribe("tele/Garage/#")    
 
 def on_message(client, obj, msg):
     print "Received %s on topic %s" % (msg.payload, msg.topic)
@@ -66,9 +66,8 @@ def on_message(client, obj, msg):
         os.system("ogg123 -q audio/klaxon.ogg")
         #play("audio/buzzer.ogg")
         #play("audio/UnFoundBug/JumpVanHalen.ogg")
-        time.sleep(1)        
-        #GPIO.output(3, GPIO.LOW)
-	elif msg.topic == 'tele/Garage/Internal' and msg.payload == 'STATE_ALARM':
+        time.sleep(1)
+    elif msg.topic == 'tele/Garage/Internal' and msg.payload == 'STATE_ALARM':
         os.system("ogg123 -q audio/buzzer.ogg")
         #play("audio/buzzer.ogg")
         #play("audio/UnFoundBug/JumpVanHalen.ogg")
